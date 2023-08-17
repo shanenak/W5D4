@@ -8,9 +8,9 @@
 #  updated_at :datetime         not null
 #
 class ShortenedUrl < ApplicationRecord
-    validates :short_url, presence: true, uniqueness: true
+    validates :long_url, presence: true, uniqueness: true
 
-    after_initialize :generate_short_url
+    after_initialize :generate_short_url, on: :create
 
     def self.random_code
         SecureRandom.urlsafe_base64
@@ -18,16 +18,16 @@ class ShortenedUrl < ApplicationRecord
 
     belongs_to :submitter,
         primary_key: :id,
-        foreign_key: :user_id,
+        foreign_key: :submitter_id,
         class_name: :User
 
     private
 
-    def generate_short_url(code = nil)
-        code ||= ShortenedUrl.random_code
-        while ShortenedUrl.exists?(code)
-            code = ShortenedUrl.random_code
+    def generate_short_url
+        self.short_url = ShortenedUrl.random_code
+
+        while ShortenedUrl.exists?(self.short_url)
+            self.short_url = ShortenedUrl.random_code
         end
-        code
     end
 end
