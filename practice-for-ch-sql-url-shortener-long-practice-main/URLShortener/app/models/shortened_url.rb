@@ -16,6 +16,11 @@ class ShortenedUrl < ApplicationRecord
         SecureRandom.urlsafe_base64
     end
 
+    belongs_to :submitter,
+        primary_key: :id,
+        foreign_key: :user_id,
+        class_name: :User
+
     private
 
     def generate_short_url(code = nil)
