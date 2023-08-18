@@ -2,10 +2,12 @@
 #
 # Table name: shortened_urls
 #
-#  id         :bigint           not null, primary key
-#  short_url  :string           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id           :bigint           not null, primary key
+#  short_url    :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  submitter_id :bigint           not null
+#  long_url     :string           not null
 #
 class ShortenedUrl < ApplicationRecord
     attr_reader :short_url
@@ -21,6 +23,11 @@ class ShortenedUrl < ApplicationRecord
         primary_key: :id,
         foreign_key: :submitter_id,
         class_name: :User
+
+    has_many :visited_urls,
+        primary_key: :id,
+        foreign_key: :shortened_url_id,
+        class_name: :Visit
 
     private
 

@@ -15,4 +15,9 @@ class User < ApplicationRecord
         foreign_key: :submitter_id,
         class_name: :ShortenedUrl
 
+    has_many :visited_users,
+        primary_key: :id,
+        foreign_key: :user_id,
+        class_name: :Visit
+
 end
